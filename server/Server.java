@@ -1,19 +1,35 @@
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.rmi.RemoteException;
 
 public class Server{
+
 	public static void main(String[] args){
+
+		try{
+			Cart cart = new Cart();
+			Registry registry = LocateRegistry.createRegistry(9100);
+			registry.rebind("cart", cart);
+		} catch (Exception e){
+			System.out.println("Server exception " + e.toString());
+			e.printStackTrace();
+		}
+
 		try{
 
 			System.setProperty("java.rmi.server.hostname", "127.0.0.1");
 			System.out.println("Server has been started...");
 
-			Product Laptop = new Product("Laptop","Lenovo", 3740.91);
-			Product MobilePhone = new Product("Mobile Phone","iPhone", 441.72);
-			Product Charger = new Product("Charger","Lenovo Charger", 841.55);
-			Product powerBank = new Product("PowerBank","Panasonic", 44.12);
+			ArrayList<Product> products = new ArrayList<>();
+			Product Laptop = new Product("Laptop", "Lenovo", 1111, 10, 15, 20);
+			Product MobilePhone = new Product("Mobile Phone", "iPhone", 2222, 10, 15, 20);
+			Product Charger = new Product("Charger", "Lenovo Charger", 3333, 10, 15, 20);
+			Product powerBank = new Product("Power Bank", "Panasonic", 4444, 10, 15, 20);
+
+			for (Product product : products){
+				product.viewProducts();
+			}
 
 			ProductInterface stub_laptop = (ProductInterface) UnicastRemoteObject.exportObject(Laptop, 0);
 			ProductInterface stub_mobilePhone = (ProductInterface) UnicastRemoteObject.exportObject(MobilePhone, 0);
