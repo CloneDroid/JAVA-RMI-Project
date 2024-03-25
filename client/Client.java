@@ -14,7 +14,6 @@ public class Client{
 
 			//locate the registry.
 			Registry registry = LocateRegistry.getRegistry("127.0.0.1", 9100);
-            //ProductInterface cart = (ProductInterface) registry.lookup("cart");
 
 			// Get the references of exported object from the RMI Registry...
 			ProductInterface p1 = (ProductInterface) registry.lookup("laptop");
