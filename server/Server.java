@@ -9,8 +9,9 @@ public class Server{
 
 		try{
 			Cart cart = new Cart();
+			ProductInterface stub_cart = (ProductInterface) UnicastRemoteObject.exportObject(cart, 0);
 			Registry registry = LocateRegistry.createRegistry(9100);
-			registry.rebind("cart", cart);
+			registry.rebind("cart", stub_cart);
 		} catch (Exception e){
 			System.out.println("Server exception " + e.toString());
 			e.printStackTrace();

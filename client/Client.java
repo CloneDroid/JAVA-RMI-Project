@@ -5,14 +5,16 @@ import java.util.Scanner;
 
 public class Client{
 
-	private static ArrayList<ProductInterface> cart = new ArrayList<>();
+	public static ArrayList<ProductInterface> cart = new ArrayList<>();
 	public static void main(String[] args){
 
 		try{
+
 			// Get the references of exported object from RMI Registry...
 
 			//locate the registry.
 			Registry registry = LocateRegistry.getRegistry("127.0.0.1", 9100);
+            //ProductInterface cart = (ProductInterface) registry.lookup("cart");
 
 			// Get the references of exported object from the RMI Registry...
 			ProductInterface p1 = (ProductInterface) registry.lookup("laptop");
@@ -20,38 +22,84 @@ public class Client{
 			ProductInterface p3 = (ProductInterface) registry.lookup("charger");
 			ProductInterface p4 = (ProductInterface) registry.lookup("powerBank");
 
-			Scanner scanner = new Scanner(System.in);
+            Scanner scanner = new Scanner(System.in);
             boolean running = true;
 
-			while (running) {
-                System.out.println("Select an option:");
-                System.out.println("1. Display products");
-                System.out.println("2. Add product to cart");
-                System.out.println("3. View products in cart");
-                System.out.println("4. Exit");
-                int option = scanner.nextInt();
+            while (running) {
+                System.out.println("Who are you?");
+                System.out.println("1. Customer");
+                System.out.println("2. Admin");
+                System.out.println("3. Exit");
+                int selection = scanner.nextInt();
 
-                switch (option) {
+                switch (selection) {
                     case 1:
-                        //displayProducts(laptop, mobilePhone, charger, powerBank);
-						displayProducts(p1, p2, p3, p4);
-                        break;
+                        CostumerUI(scanner, p1, p2, p3, p4);
+                    break;
                     case 2:
-                        //addProductToCart(scanner, laptop, mobilePhone, charger, powerBank);
-						addProductToCart(scanner, p1, p2, p3, p4);
-                        break;
+                        AdminUI(scanner, p1, p2, p3, p4);
+                    break;
                     case 3:
-                        viewProductsInCart();
-                        break;
-                    case 4:
                         running = false;
-                        break;
+                    break;
                     default:
-                        System.out.println("Invalid option. Please try again.");
+                        System.out.println("Invalid option, try again");
+                    break;
                 }
             }
-        } catch (Exception e) {
+        } catch (Exception e) { 
             System.out.println("Client side error: " + e);
+    }
+}
+
+    public static void CostumerUI(Scanner scanner, ProductInterface p1, ProductInterface p2, ProductInterface p3, ProductInterface p4) throws Exception {
+        System.out.println("Welcome dear Customer!");
+        while (true) {
+            System.out.println("1. Display Available Products");
+            System.out.println("2. Add to Cart");
+            System.out.println("3. View products in Cart");
+            System.out.println("4. Back to Menu");
+            
+            int option = scanner.nextInt();
+            switch (option) {
+                case 1:
+                    displayProducts(p1, p2, p3, p4);    
+                break;
+                case 2:
+                    addProductToCart(scanner, p1, p2, p3, p4);
+                break;
+                case 3:
+                    viewProductsInCart();
+                break;
+                case 4:
+                    return;
+                default:
+                    System.out.println("Invalid option, try again");
+                break;
+            }
+        }
+    }
+
+    public static void AdminUI(Scanner scanner, ProductInterface p1, ProductInterface p2, ProductInterface p3, ProductInterface p4) throws Exception{
+        System.out.println("Welcome dear Admin!");
+        while (true) {
+            System.out.println("1. View Displayed Products");
+            System.out.println("2. View Summary");
+            System.out.println("3. Back to Menu");
+
+            int option1 = scanner.nextInt();
+            switch (option1) {
+                case 1:
+                    displayProducts(p1, p2, p3, p4);
+                break;
+                case 2:
+                    viewSummary();
+                break;
+                case 3:
+                    return;
+                default:
+                    System.out.println("Invalid option, try again.");
+            }
         }
     }
 
@@ -72,19 +120,19 @@ public class Client{
             case 1:
                 cart.add(laptop);
                 System.out.println(laptop.getName() + " added to cart.");
-                break;
+            break;
             case 2:
                 cart.add(mobilePhone);
                 System.out.println(mobilePhone.getName() + " added to cart.");
-                break;
+            break;
             case 3:
                 cart.add(charger);
                 System.out.println(charger.getName() + " added to cart.");
-                break;
+            break;
             case 4:
                 cart.add(powerBank);
                 System.out.println(powerBank.getName() + " added to cart.");
-                break;
+            break;
             default:
                 System.out.println("Invalid product number.");
         }
@@ -102,15 +150,26 @@ public class Client{
                     System.out.println("Price: " + product.getStoreprice());
                     System.out.println();
                 } catch (Exception e) {
-                    System.out.println("Error displaying product details: " + e.getMessage());
+                    System.out.println("Error displaying product details: " + e);
                 }
             }
-		try{
-
-		}
-		catch (Exception e){
-			System.out.println("Client side error..." + e);
-		}
-	}
-}
+		
+	    }
+    }
+    private static void viewSummary(){
+        if (cart.isEmpty()){
+            System.out.println("Cart is Empty.");
+        } else {
+            System.out.println("Summary of products in Cart");
+            for (ProductInterface product : cart) {
+                try{
+                    System.out.println("Name: " + product.getName());
+                    System.out.println("Description: " +product.getDescription());
+                    System.out.println("Price: " + product.getStoreprice());
+                } catch (Exception e){
+                    System.out.println("Error displaying Summary.");
+                }
+            }
+        }
+    }
 }

@@ -31,6 +31,19 @@ public class Cart extends UnicastRemoteObject implements ProductInterface{
 		}
 	}
 
+	public void viewSummary(){
+		System.out.println("Summary if products in Cart");
+		for (Product product : addedProducts) {
+			try{
+			System.out.println("Name: " + product.getName());
+			System.out.println("Description: " + product.getDescription());
+			System.out.println("Price: " + product.getStoreprice());
+		} catch (RemoteException e){
+			System.out.println("Error displaying Summary.");
+			}
+		}
+	}
+
 	@Override
 	public String getName() throws RemoteException{
 		return null;

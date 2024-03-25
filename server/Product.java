@@ -46,4 +46,5 @@ public class Product implements ProductInterface{
 		System.out.println("Store Price:" + this.storeprice);
 		System.out.println("Quantity:" + this.quantity);
 	}
+	public void viewSummary() throws RemoteException{}
 }

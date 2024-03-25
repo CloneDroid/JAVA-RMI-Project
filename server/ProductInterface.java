@@ -9,6 +9,7 @@ public interface ProductInterface extends Remote{
 	public double getRetailprice() throws RemoteException;
 	public double getStoreprice() throws RemoteException;
 	public int getQuantity() throws RemoteException;
+	public void viewSummary() throws RemoteException;
 	//public void changeProductName(String newName) throws RemoteException;
 	
 }
