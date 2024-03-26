@@ -76,7 +76,7 @@ public class Cart extends UnicastRemoteObject implements ProductInterface{
 
 	//@Override
 	//public void changeProductName() throws RemoteException{
-		//return Name;
+		//return newName;
 	//}
 
 }
